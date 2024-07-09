@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/POM/4.0.0/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.example</groupId>
+    <artifactId>react-frontend-app</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>React Front-End Application</name>
+
+    <properties>
+        <node.version>18.17.1</node.version> <!-- Node.js version for the React build -->
+        <npm.version>9.8.1</npm.version> <!-- npm version -->
+        <react-scripts.version>5.0.1</react-scripts.version> <!-- React Scripts version -->
+    </properties>
+
+    <build>
+        <plugins>
+            <!-- Plugin to manage Node.js and npm -->
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.12.0</version>
+                <configuration>
+                    <nodeVersion>${node.version}</nodeVersion>
+                    <npmVersion>${npm.version}</npmVersion>
+                    <installDirectory>${project.basedir}/frontend</installDirectory>
+                    <nodeWorkDir>${project.basedir}/node_modules</nodeWorkDir>
+                    <npmWorkDir>${project.basedir}/node_modules</npmWorkDir>
+                    <yarnWorkDir>${project.basedir}/node_modules</yarnWorkDir>
+                </configuration>
+                <executions>
+                    <!-- Install Node.js and npm -->
+                    <execution>
+                        <id>install</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                    </execution>
+                    <!-- Install dependencies -->
+                    <execution>
+                        <id>npm install</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>install</goal>
+                        </goals>
+                    </execution>
+                    <!-- Run the build command -->
+                    <execution>
+                        <id>npm build</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run build</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Maven JAR Plugin to package the frontend build artifacts -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <outputDirectory>${project.basedir}/frontend/build</outputDirectory>
+                    <archive>
+                        <manifestEntries>
+                            <Built-By>${user.name}</Built-By>
+                            <Built-Jdk>${java.version}</Built-Jdk>
+                            <Built-Date>${maven.build.timestamp}</Built-Date>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!-- Add any backend dependencies if necessary -->
+    </dependencies>
+</project>
